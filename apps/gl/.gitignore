@@ -9,6 +9,7 @@ fork
 glfw
 gremedy
 map_buffer
+map_and_draw_coherent
 map_coherent
 program_binary
 program_binary.bin

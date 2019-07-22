@@ -27,6 +27,7 @@ set (targets
     tri_glsl_es2
     gremedy
     varray
+    map_and_draw_coherent
     map_buffer
     map_coherent
     program_binary
