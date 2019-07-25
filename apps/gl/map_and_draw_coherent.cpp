@@ -31,6 +31,8 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 #include <assert.h>
@@ -42,6 +44,17 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+
+size_t getSystemPageSize() {
+#ifdef _WIN32
+    SYSTEM_INFO info;
+    GetSystemInfo(&info);
+    return info.dwPageSize;
+#else
+    return sysconf(_SC_PAGESIZE);
+#endif
+}
 
 static const GLchar* vert_shader_text =
     "#version 430 core\n"
@@ -358,6 +371,7 @@ int main(int argc, char** argv) {
     int i;
     int step = 8;
 
+    printf("getSystemPageSize: %u\n",getSystemPageSize());
     glfwInit();
 
     glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
@@ -384,6 +398,7 @@ int main(int argc, char** argv) {
 
     generateVerticles(width, height, step);
     generate_colors(width, height, step);
+
 
     draw(window, width, height);
 

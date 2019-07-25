@@ -28,6 +28,7 @@ set (targets
     gremedy
     varray
     map_and_draw_coherent
+    fill_ssbo_coherent
     map_buffer
     map_coherent
     program_binary

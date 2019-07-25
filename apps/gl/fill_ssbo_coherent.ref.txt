@@ -1,0 +1,617 @@
+//!fill_ssbo_coherent
+glCreateProgram() = 1
+glCreateShader(type = GL_COMPUTE_SHADER) = 2
+glShaderSource(shader = 2, count = 1, string = &"#version 430 core
+#extension GL_ARB_uniform_buffer_object : require
+layout(local_size_x = 1000) in; 
+
+uniform uint stride; 
+uniform uint start_bound; 
+uniform uint end_bound; 
+uniform int value; 
+
+layout(std430, binding=0) buffer Fragments { int data[]; }; 
+
+void main()
+{
+   if (gl_GlobalInvocationID.x >= start_bound && gl_GlobalInvocationID.x < end_bound) 
+   {
+       if (mod(gl_GlobalInvocationID.x, stride) == 0)
+           data[gl_GlobalInvocationID.x] = value; 
+   }
+}
+", length = NULL)
+glCompileShader(shader = 2)
+glGetShaderiv(shader = 2, pname = GL_COMPILE_STATUS, params = &1)
+glAttachShader(program = 1, shader = 2)
+glLinkProgram(program = 1)
+glGetProgramiv(program = 1, pname = GL_LINK_STATUS, params = &1)
+glGenBuffers(n = 1, buffers = &1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 1)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 1)
+glGenBuffers(n = 1, buffers = &2)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 2)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 2)
+glGenBuffers(n = 1, buffers = &3)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 3)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 3)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 2)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 2)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 0)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 1)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 2)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 0)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 2)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 2)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 1)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 2)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 0)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 2)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 2)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 3)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 2)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glGenBuffers(n = 1, buffers = &4)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 4)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 4)
+glGenBuffers(n = 1, buffers = &5)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 5)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 5)
+glGenBuffers(n = 1, buffers = &6)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 6)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 6)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 5)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4096)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 4)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4096)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 5)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 4)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4096)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 5)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 6)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 4)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 5)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 6)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGenBuffers(n = 1, buffers = &7)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 7)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 7)
+glGenBuffers(n = 1, buffers = &8)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 8)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 8)
+glGenBuffers(n = 1, buffers = &9)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 9)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 9)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 8)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4092)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 7)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4092)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 8)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 7)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4092)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 8)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 9)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 7)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 8)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 9)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGenBuffers(n = 1, buffers = &10)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 10)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 10)
+glGenBuffers(n = 1, buffers = &11)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 11)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 11)
+glGenBuffers(n = 1, buffers = &12)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 12)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 12)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 11)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4100)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 10)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4100)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 11)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 10)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 4100)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 11)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 12)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 10)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 11)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 12)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGenBuffers(n = 1, buffers = &13)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 13)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 13)
+glGenBuffers(n = 1, buffers = &14)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 14)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 14)
+glGenBuffers(n = 1, buffers = &15)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 15)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 15)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 14)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8192)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 13)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8192)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 14)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 13)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8192)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 14)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 15)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 13)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 14)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 15)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGenBuffers(n = 1, buffers = &16)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 16)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 16)
+glGenBuffers(n = 1, buffers = &17)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 17)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 17)
+glGenBuffers(n = 1, buffers = &18)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 18)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 18)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 17)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8196)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 16)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8196)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 17)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 16)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8196)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 17)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 18)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 16)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 17)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 18)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGenBuffers(n = 1, buffers = &19)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 19)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 19)
+glGenBuffers(n = 1, buffers = &20)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 20)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 20)
+glGenBuffers(n = 1, buffers = &21)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 21)
+glBufferStorage(target = GL_SHADER_STORAGE_BUFFER, size = 180000, data = NULL, flags = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glGetError() = GL_NO_ERROR
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 21)
+glUseProgram(program = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 20)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8188)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 15000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 19)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8188)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 20)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 19)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 8188)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 45000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 20)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 1715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 21)
+glGetUniformLocation(program = 1, name = "stride") = 0
+glUniform1ui(location = 0, v0 = 4096)
+glGetUniformLocation(program = 1, name = "start_bound") = 1
+glUniform1ui(location = 1, v0 = 15000)
+glGetUniformLocation(program = 1, name = "end_bound") = 2
+glUniform1ui(location = 2, v0 = 30000)
+glGetUniformLocation(program = 1, name = "value") = 3
+glUniform1i(location = 3, v0 = 715827882)
+glDispatchCompute(num_groups_x = 45, num_groups_y = 1, num_groups_z = 1)
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 19)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 20)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
+glBindBufferBase(target = GL_SHADER_STORAGE_BUFFER, index = 0, buffer = 21)
+glUnmapBuffer(target = GL_SHADER_STORAGE_BUFFER) = GL_TRUE
